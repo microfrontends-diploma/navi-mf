@@ -16,24 +16,30 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set Node.js 16.x
+      - name: Set node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
-      - name: Run install
+      # нужно для установки приватного пакета
+      - name: creating .npmrc
+        run: |
+          touch .npmrc
+          printf "registry=https://registry.npmjs.org\n@microfrontends-diploma:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_PAT }}" >> .npmrc
+
+      - name: run install
         uses: borales/actions-yarn@v4
         with:
           cmd: install
 
-      - name: Run linter
+      - name: run linter
         id: lint
         uses: borales/actions-yarn@v4
         with:
           cmd: lint
         continue-on-error: true
 
-      - name: Run formatter
+      - name: run formatter
         uses: borales/actions-yarn@v4
         with:
           cmd: format
