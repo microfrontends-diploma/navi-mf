@@ -2,7 +2,7 @@ FROM node:16.20-alpine3.16 as builder
 
 WORKDIR /app
 
-COPY package*.json yarn.lock ./
+COPY package*.json yarn.lock .npmrc ./
 
 RUN yarn install
 
