@@ -64,4 +64,4 @@ jobs:
       - name: run docker container and save id
         run: |
           FILE="$HOME/docker-containers-id/$FILE_NAME"
-          docker run --cidfile $FILE -d -p 8501:8501 $CONTAINER_TAG
+          docker run --cidfile $FILE -d -p 8502:8502 $CONTAINER_TAG
