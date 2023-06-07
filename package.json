@@ -3,8 +3,7 @@
   "scripts": {
     "start": "webpack serve --port 8502",
     "start:standalone": "webpack serve --env standalone",
-    "build": "concurrently yarn:build:*",
-    "build:webpack": "webpack --mode=production",
+    "build": "webpack --mode=production",
     "analyze": "webpack --mode=production --env analyze",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
@@ -66,6 +65,5 @@
     "react-dom": "^17.0.2",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1"
-  },
-  "types": "dist/andy-inc-navi-mf.d.ts"
+  }
 }
