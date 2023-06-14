@@ -5,8 +5,6 @@ import { CoordinatesServerResponse } from "src/api/dto/navi.dto";
 import { FileUploader, FileChangeFunction } from "@microfrontends-diploma/shared-code";
 import "@microfrontends-diploma/shared-code/dist/esm/index.css";
 
-// TODO: прикрутить валидацию
-// TODO: навести красоту
 const Navi = () => {
   const api = useApi();
 
@@ -77,55 +75,71 @@ const Navi = () => {
 
   return (
     <Container>
-      <Grid container spacing={1}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h3'>Navi</Typography>
         </Grid>
 
-        <Grid item xs={12}>
-          <Typography>Загрузите OBS файл</Typography>
-          <FileUploader id='obsfile' onChange={onFileChanged("obs")} disabled={calculationInProgress} />
-        </Grid>
+        <Grid container item xs={12}>
+          <Grid container item xs={stationCoordinates && !calculationInProgress ? 6 : 12} spacing={1}>
+            <Grid item xs={12}>
+              <Typography variant="h6">Загрузите OBS файл:</Typography>
+            </Grid>
 
-        <Grid item xs={12}>
-          <Typography>Загрузите NAV файл</Typography>
-          <FileUploader id='navfile' onChange={onFileChanged("nav")} disabled={calculationInProgress} />
-        </Grid>
+            <Grid item xs={12}>
+              <FileUploader id='obsfile' onChange={onFileChanged("obs")} disabled={calculationInProgress} />
+            </Grid>
 
-        {calculationInProgress && (
-          <Grid item xs='auto'>
-            <Typography>Пожалуйста, подождите, происходит расчет положения станции...</Typography>
-            <LinearProgress />
-          </Grid>
-        )}
+            <Grid item xs={12}>
+              <Typography variant="h6">Загрузите NAV файл:</Typography>
+            </Grid>
 
-        <Grid item xs={12}>
-          <Button
-            variant='contained'
-            disabled={!filesContent.obsfile || !filesContent.navfile || calculationInProgress || calculationBtnDisabled}
-            onClick={onCalculateCoordinates}
-          >
-            Рассчитать координаты
-          </Button>
-        </Grid>
+            <Grid item xs={12}>
+                <FileUploader id='navfile' onChange={onFileChanged("nav")} disabled={calculationInProgress} />
+            </Grid>
 
-        {stationCoordinates && !calculationInProgress ? (
-          <Grid item xs={12}>
-            {stationCoordinates.valid ? (
-              <>
-                <Typography variant='h6'>Координаты станции:</Typography>
-                <Typography>x: {stationCoordinates.coordinates[0]}</Typography>
-                <Typography>y: {stationCoordinates.coordinates[1]}</Typography>
-                <Typography>z: {stationCoordinates.coordinates[2]}</Typography>
-              </>
-            ) : (
-              <Typography variant='h6' color='error'>
-                Координаты станции некорректны!
-              </Typography>
+            {calculationInProgress && (
+              <Grid item xs='auto'>
+                <Typography>Пожалуйста, подождите, происходит расчет положения станции...</Typography>
+                <LinearProgress />
+              </Grid>
             )}
+
+            <Grid item xs={12}>
+              <Button
+                variant='contained'
+                disabled={!filesContent.obsfile || !filesContent.navfile || calculationInProgress || calculationBtnDisabled}
+                onClick={onCalculateCoordinates}
+              >
+                Рассчитать координаты
+              </Button>
+            </Grid>
           </Grid>
-        ) : null}
+
+          {stationCoordinates && !calculationInProgress && (
+            <Grid container item xs={6} spacing={1}>
+              {stationCoordinates.valid ? (
+                <>
+                  <Grid item xs={12} sx={{height: 'auto'}}>
+                    <Typography variant='h6'>Координаты станции:</Typography>
+
+                    <Typography>x: {stationCoordinates.coordinates[0]}</Typography>
+                    <Typography>y: {stationCoordinates.coordinates[1]}</Typography>
+                    <Typography>z: {stationCoordinates.coordinates[2]}</Typography>
+                  </Grid>
+                </>
+              ) : (
+                <Grid item xs={12}>
+                  <Typography variant='h6' color='error'>
+                    Координаты станции некорректны!
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          )}
+        </Grid>
       </Grid>
+
     </Container>
   );
 };
